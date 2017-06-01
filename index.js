@@ -10,21 +10,21 @@ module.exports = {
     this._super.included.apply(this, arguments);
 
     this.enabled = this.app.env === 'production'
-    this.options = this.app.options.imagemin = this.app.options.imagemin || {};
+    this.imageminOptions = this.app.options.imagemin = this.app.options.imagemin || {};
 
-    if ('enabled' in this.options) {
-      this.enabled = this.options.enabled;
-      delete this.options.enabled;
+    if ('enabled' in this.imageminOptions) {
+      this.enabled = this.imageminOptions.enabled;
+      delete this.imageminOptions.enabled;
     }
 
-    if (!this.options.plugins || this.options.plugins.length === 0) {
+    if (!this.imageminOptions.plugins || this.imageminOptions.plugins.length === 0) {
       this.enabled = false;
     }
   },
 
   postprocessTree: function(type, tree) {
     if (this.enabled) {
-      tree = new imagemin(tree, this.options);
+      tree = new imagemin(tree, this.imageminOptions);
     }
 
     return tree;
